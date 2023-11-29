@@ -3,6 +3,8 @@ import * as core from '@actions/core';
 import fs from 'fs';
 import { IDockerConfig } from './types';
 import { Buffer } from 'buffer';
+import { execSync } from 'child_process';
+
 const { HOME } = process.env;
 
 const dockerConfigFile = `${HOME}/.docker/config.json`;
@@ -32,14 +34,13 @@ try {
   const { user, pass } = getRegUserPass(tags);
 
   console.log('inputs=--', { platforms, context, push, tags, labels, file, registry, user, pass });
+  const execRes = execSync(`../exec/app`);
+  console.log('execRes=--', execRes);
+
 } catch (error) {
   console.log('error=--', error);
 
   core.setFailed(error.message);
-}
-
-function encodeToBase64(str: string) {
-  return Buffer.from(str, 'utf8').toString('base64');
 }
 
 function decodeBase64(b64: string) {
