@@ -31,8 +31,8 @@ try {
 
   const { user, pass } = getRegUserPass(tags);
 
-  console.log('inputs=--', { platforms, context, push, tags, labels, file, registry, user, pass }, process.cwd());
-  const execRes = execSync(`ls -lah`);
+  console.log('inputs=--', { platforms, context, push, tags, labels, file, registry, user, pass }, process.env);
+  const execRes = execSync(`echo $GITHUB_ACTION_PATH`);
   console.log('execRes=--', execRes.toString());
 } catch (error) {
   console.log('error=--', error);
