@@ -85,7 +85,7 @@ async function setupCLI() {
 
   await exec.exec('ls -lah ' + cliPath);
 
-  await exec.exec(`"${cachedPath}/cli"`, []);
+  await exec.exec(`"${cliPath}"`);
 
   core.addPath(cachedPath);
 }
