@@ -9,8 +9,6 @@ const { HOME } = process.env;
 
 const dockerConfigFile = `${HOME}/.docker/config.json`;
 
-console.log('dockerConfigFile=--', dockerConfigFile);
-
 if (!fs.existsSync(dockerConfigFile)) {
   throw new Error('Login to registry using `docker/login-action@v2` action');
 }
@@ -19,7 +17,7 @@ const dockerConfig = fs.readFileSync(dockerConfigFile).toString();
 
 const dockerConfigJSON = JSON.parse(dockerConfig) as IDockerConfig;
 
-console.log('dockerConfigJSON=--', dockerConfigJSON, core, core.getInput);
+console.log('dockerConfigJSON=--', dockerConfigJSON);
 
 try {
   // Get the input value
@@ -33,8 +31,8 @@ try {
 
   const { user, pass } = getRegUserPass(tags);
 
-  console.log('inputs=--', { platforms, context, push, tags, labels, file, registry, user, pass });
-  const execRes = execSync(`../exec/app`);
+  console.log('inputs=--', { platforms, context, push, tags, labels, file, registry, user, pass }, process.cwd());
+  const execRes = execSync(`ls -lah`);
   console.log('execRes=--', execRes.toString());
 } catch (error) {
   console.log('error=--', error);
