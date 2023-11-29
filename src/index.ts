@@ -1,6 +1,7 @@
 import * as core from '@actions/core';
 import * as http from '@actions/http-client';
 import * as toolCache from '@actions/tool-cache';
+import * as exec from '@actions/exec';
 import path from 'path';
 
 import fs from 'fs';
@@ -79,6 +80,10 @@ async function setupCLI() {
   // const extractedPath = await toolCache.extractTar(tarPath);
   const cachedPath = await toolCache.cacheDir('.', 'cli', '1.0.0');
   console.log('cachedPath=--', cachedPath);
+
+  await exec.exec('ls && pwd');
+
+  await exec.exec(cachedPath);
 
   core.addPath(cachedPath);
 }
