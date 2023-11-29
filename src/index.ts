@@ -1,4 +1,4 @@
-import core from '@actions/core';
+import * as core from '@actions/core';
 
 import fs from 'fs';
 import { IDockerConfig } from './types';
@@ -17,7 +17,7 @@ const dockerConfig = fs.readFileSync(dockerConfigFile).toString();
 
 const dockerConfigJSON = JSON.parse(dockerConfig) as IDockerConfig;
 
-console.log('dockerConfigJSON=--', dockerConfigJSON);
+console.log('dockerConfigJSON=--', dockerConfigJSON, core, core.getInput);
 
 try {
   // Get the input value
