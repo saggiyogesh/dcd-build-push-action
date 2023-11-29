@@ -26,6 +26,8 @@ try {
   const file = core.getInput('file');
   const registry = core.getInput('registry');
 
+  console.log('inputs=--', { platforms, context, push, tags, labels, file, registry });
+
   // ... perform some tasks ...
 
   // Set the output value
