@@ -83,7 +83,7 @@ async function setupCLI() {
 
   // await exec.exec('sh ls && pwd');
 
-  await exec.exec(`"${cachedPath}/cli"`, []);
+  await exec.exec(`"${cachedPath}"`, []);
 
   core.addPath(cachedPath);
 }
