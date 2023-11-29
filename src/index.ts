@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import core from '@actions/core';
 
 import fs from 'fs';
-import axios from 'axios';
 import { execSync } from 'child_process';
 
 const { HOME } = process.env;
@@ -25,7 +25,6 @@ try {
   const labels = core.getInput('labels');
   const file = core.getInput('file');
   const registry = core.getInput('registry');
-
 
   // ... perform some tasks ...
 
