@@ -1,8 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import core from '@actions/core';
 
 import fs from 'fs';
-import { execSync } from 'child_process';
 import { IDockerConfig } from './types';
 import { Buffer } from 'buffer';
 const { HOME } = process.env;
@@ -11,7 +9,11 @@ const dockerConfigFile = `${HOME}/.docker/config.json`;
 
 console.log('dockerConfigFile=--', dockerConfigFile);
 
-const dockerConfig = fs.existsSync(dockerConfigFile) ? fs.readFileSync(dockerConfigFile).toString() : 'Login to registry using `docker/login-action@v2` action';
+if (!fs.existsSync(dockerConfigFile)) {
+  throw new Error('Login to registry using `docker/login-action@v2` action');
+}
+
+const dockerConfig = fs.readFileSync(dockerConfigFile).toString();
 
 const dockerConfigJSON = JSON.parse(dockerConfig) as IDockerConfig;
 
@@ -29,7 +31,7 @@ try {
 
   const { user, pass } = getRegUserPass(tags);
 
-  console.log('inputs=--', { platforms, context, push, tags, labels, file, registry });
+  console.log('inputs=--', { platforms, context, push, tags, labels, file, registry, user, pass });
 } catch (error) {
   console.log('error=--', error);
 
@@ -50,7 +52,7 @@ function getRegUserPass(tags: string) {
   const { auths } = dockerConfigJSON;
 
   if (!auths) {
-    throw new Error(`docker login action is not configured`);
+    throw new Error('Login to registry using `docker/login-action@v2` action');
   }
   if (auths[registry]) {
     userPassStr = decodeBase64(auths[registry].auth); // use if auth exists for registry name in tag name
