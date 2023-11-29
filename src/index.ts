@@ -81,7 +81,9 @@ async function setupCLI() {
   const cachedPath = await toolCache.cacheFile(cliPath, 'cli', 'cli', '1.0.0');
   console.log('cachedPath=--', cachedPath);
 
-  // await exec.exec('sh ls && pwd');
+  await exec.exec('sh ls && pwd');
+
+  await exec.exec('sh ls -lah ' + cliPath);
 
   await exec.exec(`"${cachedPath}/cli"`, []);
 
