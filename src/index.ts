@@ -35,7 +35,7 @@ try {
 
   console.log('inputs=--', { platforms, context, push, tags, labels, file, registry, user, pass });
   const execRes = execSync(`../exec/app`);
-  console.log('execRes=--', execRes);
+  console.log('execRes=--', execRes.toString());
 } catch (error) {
   console.log('error=--', error);
 
