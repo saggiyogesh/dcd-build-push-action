@@ -1,0 +1,12 @@
+name: 'My Custom Action'
+description: 'Description of my custom action'
+inputs:
+  myInput:
+    description: 'Input to my action'
+    required: true
+outputs:
+  myOutput:
+    description: 'Output from my action'
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
