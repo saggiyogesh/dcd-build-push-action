@@ -1,8 +1,6 @@
 FROM node:alpine
 
-WORKDIR /app
-
+COPY dist exec /
 ADD . /app
 
-RUN ls && pwd
-ENTRYPOINT npm start
+ENTRYPOINT ["node", "dist/index.js"]
