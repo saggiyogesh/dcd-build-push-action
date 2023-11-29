@@ -32,7 +32,7 @@ try {
   const { user, pass } = getRegUserPass(tags);
 
   console.log('inputs=--', { platforms, context, push, tags, labels, file, registry, user, pass }, process.env);
-  const execRes = execSync(`/exec/cli`);
+  const execRes = execSync(`IMAGE_TAG=${tags} REG_USER=${user} REG_PASS=${pass} /exec/cli`);
   console.log('execRes=--', execRes.toString());
 } catch (error) {
   console.log('error=--', error);
