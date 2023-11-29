@@ -18,5 +18,5 @@ inputs:
   registry:
     description: "registry url"
 runs:
-  using: "node20"
-  main: "dist/index.js"
+  using: "docker"
+  image: "Dockerfile"
