@@ -1,4 +1,7 @@
 import * as core from '@actions/core';
+import * as http from '@actions/http-client';
+import * as toolCache from '@actions/tool-cache';
+import path from 'path';
 
 import fs from 'fs';
 import { IDockerConfig } from './types';
@@ -19,7 +22,8 @@ const dockerConfigJSON = JSON.parse(dockerConfig) as IDockerConfig;
 
 console.log('dockerConfigJSON=--', dockerConfigJSON);
 
-try {
+async function main() {
+  await setupCLI();
   // Get the input value
   const platforms = core.getInput('platforms');
   const context = core.getInput('context');
@@ -34,12 +38,7 @@ try {
   console.log('inputs=--', { platforms, context, push, tags, labels, file, registry, user, pass }, process.env);
   const execRes = execSync(`IMAGE_TAG=${tags} REG_USER=${user} REG_PASS=${pass} /exec/cli`);
   console.log('execRes=--', execRes.toString());
-} catch (error) {
-  console.log('error=--', error);
-
-  core.setFailed(error.message);
 }
-
 function decodeBase64(b64: string) {
   return Buffer.from(b64, 'base64').toString('utf8');
 }
@@ -60,3 +59,34 @@ function getRegUserPass(tags: string) {
   const [user, pass] = userPassStr.split(':');
   return { user, pass };
 }
+
+async function setupCLI() {
+  const toolPath = toolCache.find('cli', '1.0.0');
+  console.log('toolPath=--', toolPath);
+
+  if (toolPath) {
+    core.addPath(toolPath);
+    return;
+  }
+
+  type ApiResponse = { ok: true; url: string } | { ok: false; error: string };
+
+  const client = new http.HttpClient('dcd-builder-cli-setup-action');
+  const url = 'https://github.com/saggiyogesh/dcd-build-push-action/raw/main/exec/cli';
+  const cliPath = await toolCache.downloadTool(url);
+  console.log('cliPath=--', cliPath);
+
+  // const extractedPath = await toolCache.extractTar(tarPath);
+  const cachedPath = await toolCache.cacheDir('.', 'cli', '1.0.0');
+  console.log('cachedPath=--', cachedPath);
+
+  core.addPath(cachedPath);
+}
+
+main().catch(error => {
+  if (error instanceof Error) {
+    core.setFailed(error.message);
+  } else {
+    core.setFailed(`${error}`);
+  }
+});
