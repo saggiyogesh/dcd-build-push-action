@@ -1,12 +1,22 @@
-name: 'My Custom Action'
-description: 'Description of my custom action'
+name: "DCD Build Push Action"
+description: "Description of my custom action"
 inputs:
-  myInput:
-    description: 'Input to my action'
+  context:
+    description: "Context of Dockerfile or Containerfile"
+  file:
+    description: "Dockerfile or Containerfile"
+  platforms:
+    description: "Image platforms to run my action on - amd or arm"
     required: true
-outputs:
-  myOutput:
-    description: 'Output from my action'
+  push:
+    description: "Always push the image to registry"
+  tags:
+    description: "Image tag to be build"
+    required: true
+  labels:
+    description: "Labels to be added to the image"
+  registry:
+    description: "registry url"
 runs:
-  using: 'node20'
-  main: 'dist/index.js'
+  using: "node20"
+  main: "dist/index.js"
