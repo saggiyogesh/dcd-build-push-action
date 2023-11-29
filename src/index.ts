@@ -78,7 +78,7 @@ async function setupCLI() {
   console.log('cliPath=--', cliPath);
 
   // const extractedPath = await toolCache.extractTar(tarPath);
-  const cachedPath = await toolCache.cacheDir('.', 'cli', '1.0.0');
+  const cachedPath = await toolCache.cacheFile(cliPath, 'cli', 'cli', '1.0.0');
   console.log('cachedPath=--', cachedPath);
 
   // await exec.exec('sh ls && pwd');
