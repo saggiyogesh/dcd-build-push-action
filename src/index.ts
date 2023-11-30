@@ -79,7 +79,8 @@ async function setupCLI() {
 
   // const extractedPath = await toolCache.extractTar(tarPath);
   const cachedPath = await toolCache.cacheFile(cliPath, 'cli', 'cli', '1.0.0');
-  console.log('cachedPath=--', cachedPath);
+  const execPath = path.join(cachedPath, 'cli');
+  console.log('cachedPath=--', cachedPath, execPath);
 
   await exec.exec('pwd');
 
@@ -89,13 +90,13 @@ async function setupCLI() {
 
   // await exec.exec(`"${cliPath}"`);
 
-  await exec.exec('ls -lah ' + cachedPath + '/' + 'cli');
+  await exec.exec('ls -lah ' + execPath);
 
-  await exec.exec('chmod +x ' + cachedPath + '/' + 'cli');
+  await exec.exec('chmod +x ' + execPath);
 
-  await exec.exec(`"${cachedPath}"`);
+  await exec.exec(`"${execPath}"`);
 
-  core.addPath(cachedPath);
+  core.addPath(execPath);
 }
 
 main().catch(error => {
