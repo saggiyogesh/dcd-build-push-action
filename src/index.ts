@@ -83,6 +83,10 @@ async function setupCLI() {
 
   const cachedPath = await toolCache.cacheFile(tmpPath, 'dcdcli', 'dcdcli', '1.0.0');
   const execPath = path.join(cachedPath, 'dcdcli');
+  await exec.exec(`ls -lah ${cachedPath}`);
+  await exec.exec(`ls -lah ${tmpPath}`);
+  await exec.exec(`ls -lah ${execPath}`);
+
   console.log('cachedPath=--', cachedPath, execPath);
   core.addPath(cachedPath);
 }
