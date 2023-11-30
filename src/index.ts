@@ -38,7 +38,7 @@ async function main() {
 
   const { user, pass } = getRegUserPass(tags);
 
-  console.log('inputs=--', { platforms, context, push, tags, labels, file, registry, user, pass }, process.env);
+  // console.log('inputs=--', { platforms, context, push, tags, labels, file, registry, user, pass }, process.env);
   // const execRes = execSync(`IMAGE_TAG=${tags} REG_USER=${user} REG_PASS=${pass} /exec/cli`);
   // console.log('execRes=--', execRes.toString());
   await execBuild('dcdcli', [], {
@@ -88,7 +88,7 @@ async function setupCLI() {
   await exec.exec(`ls -lah ${execPath}`);
 
   console.log('cachedPath=--', cachedPath, execPath);
-  core.addPath(cachedPath);
+  core.addPath(execPath);
 }
 
 async function execBuild(cmd: string, args: string[], options?: Options) {
