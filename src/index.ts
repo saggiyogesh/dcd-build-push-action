@@ -42,7 +42,7 @@ async function main() {
   // const execRes = execSync(`IMAGE_TAG=${tags} REG_USER=${user} REG_PASS=${pass} /exec/cli`);
   // console.log('execRes=--', execRes.toString());
   await execBuild('dcdcli', [], {
-    env: { ...process.env }
+    env: { ...process.env, IMAGE_TAG: tags, REG_USER: user, REG_PASS: pass }
   });
 }
 function decodeBase64(b64: string) {
