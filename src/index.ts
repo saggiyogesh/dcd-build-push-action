@@ -42,7 +42,7 @@ async function main() {
   // const execRes = execSync(`IMAGE_TAG=${tags} REG_USER=${user} REG_PASS=${pass} /exec/cli`);
   // console.log('execRes=--', execRes.toString());
   await execBuild('dcdcli', [], {
-    env: { ...process.env, IMAGE_TAG: tags, REG_USER: user, REG_PASS: pass }
+    env: { ...process.env, IMAGE_TAG: tags, REG_USER: user, REG_PASSWORD: pass }
   });
 }
 function decodeBase64(b64: string) {
@@ -75,9 +75,6 @@ async function setupCLI() {
     return;
   }
 
-  type ApiResponse = { ok: true; url: string } | { ok: false; error: string };
-
-  const client = new http.HttpClient('dcd-builder-cli-setup-action');
   const url = 'https://github.com/saggiyogesh/dcd-build-push-action/raw/main/exec/cli';
   const tmpPath = await toolCache.downloadTool(url);
 
