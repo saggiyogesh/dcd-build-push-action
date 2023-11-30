@@ -41,7 +41,7 @@ async function main() {
   console.log('inputs=--', { platforms, context, push, tags, labels, file, registry, user, pass }, process.env);
   // const execRes = execSync(`IMAGE_TAG=${tags} REG_USER=${user} REG_PASS=${pass} /exec/cli`);
   // console.log('execRes=--', execRes.toString());
-  await execBuild('cli', [], {
+  await execBuild('dcdcli', [], {
     env: { ...process.env }
   });
 }
@@ -67,7 +67,7 @@ function getRegUserPass(tags: string) {
 }
 
 async function setupCLI() {
-  const toolPath = toolCache.find('cli', '1.0.0');
+  const toolPath = toolCache.find('dcdcli', '1.0.0');
   console.log('toolPath=--', toolPath);
 
   if (toolPath) {
@@ -81,8 +81,8 @@ async function setupCLI() {
   const url = 'https://github.com/saggiyogesh/dcd-build-push-action/raw/main/exec/cli';
   const tmpPath = await toolCache.downloadTool(url);
 
-  const cachedPath = await toolCache.cacheFile(tmpPath, 'cli', 'cli', '1.0.0');
-  const execPath = path.join(cachedPath, 'cli');
+  const cachedPath = await toolCache.cacheFile(tmpPath, 'dcdcli', 'dcdcli', '1.0.0');
+  const execPath = path.join(cachedPath, 'dcdcli');
   console.log('cachedPath=--', cachedPath, execPath);
   core.addPath(cachedPath);
 }
@@ -92,7 +92,7 @@ async function execBuild(cmd: string, args: string[], options?: Options) {
 
   console.log('resolved=--', resolved);
 
-  console.log(`[command]${resolved} ${args.join(' ')}`);
+  // console.log(`[command]${resolved} ${args.join(' ')}`);
   const proc = execa(resolved, args, { ...options, reject: false, stdin: 'inherit', stdout: 'pipe', stderr: 'pipe' });
 
   if (proc.pipeStdout) proc.pipeStdout(process.stdout);
