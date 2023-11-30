@@ -85,10 +85,10 @@ async function setupCLI() {
   const execPath = path.join(cachedPath, 'dcdcli');
   await exec.exec(`ls -lah ${cachedPath}`);
   await exec.exec(`ls -lah ${tmpPath}`);
-  await exec.exec(`ls -lah ${execPath}`);
+  await exec.exec(`"${execPath}"`);
 
   console.log('cachedPath=--', cachedPath, execPath);
-  core.addPath(execPath);
+  core.addPath(cachedPath);
 }
 
 async function execBuild(cmd: string, args: string[], options?: Options) {
