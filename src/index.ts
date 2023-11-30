@@ -2,6 +2,8 @@ import * as core from '@actions/core';
 import * as http from '@actions/http-client';
 import * as toolCache from '@actions/tool-cache';
 import * as exec from '@actions/exec';
+import { execa, Options } from 'execa';
+import * as io from '@actions/io';
 import path from 'path';
 
 import fs from 'fs';
@@ -37,8 +39,11 @@ async function main() {
   const { user, pass } = getRegUserPass(tags);
 
   console.log('inputs=--', { platforms, context, push, tags, labels, file, registry, user, pass }, process.env);
-  const execRes = execSync(`IMAGE_TAG=${tags} REG_USER=${user} REG_PASS=${pass} /exec/cli`);
-  console.log('execRes=--', execRes.toString());
+  // const execRes = execSync(`IMAGE_TAG=${tags} REG_USER=${user} REG_PASS=${pass} /exec/cli`);
+  // console.log('execRes=--', execRes.toString());
+  await execBuild('cli', [], {
+    env: { ...process.env }
+  });
 }
 function decodeBase64(b64: string) {
   return Buffer.from(b64, 'base64').toString('utf8');
@@ -74,29 +79,38 @@ async function setupCLI() {
 
   const client = new http.HttpClient('dcd-builder-cli-setup-action');
   const url = 'https://github.com/saggiyogesh/dcd-build-push-action/raw/main/exec/cli';
-  const cliPath = await toolCache.downloadTool(url);
-  console.log('cliPath=--', cliPath);
+  const tmpPath = await toolCache.downloadTool(url);
 
-  // const extractedPath = await toolCache.extractTar(tarPath);
-  const cachedPath = await toolCache.cacheFile(cliPath, 'cli', 'cli', '1.0.0');
+  const cachedPath = await toolCache.cacheFile(tmpPath, 'cli', 'cli', '1.0.0');
   const execPath = path.join(cachedPath, 'cli');
   console.log('cachedPath=--', cachedPath, execPath);
-
-  await exec.exec('pwd');
-
-  await exec.exec('ls -lah ' + cliPath);
-
-  await exec.exec('chmod +x ' + cliPath);
-
-  // await exec.exec(`"${cliPath}"`);
-
-  await exec.exec('ls -lah ' + execPath);
-
-  await exec.exec('chmod +x ' + execPath);
-
-  await exec.exec(`"${execPath}"`);
-
   core.addPath(execPath);
+}
+
+async function execBuild(cmd: string, args: string[], options?: Options) {
+  const resolved = await io.which(cmd, true);
+  console.log(`[command]${resolved} ${args.join(' ')}`);
+  const proc = execa(resolved, args, { ...options, reject: false, stdin: 'inherit', stdout: 'pipe', stderr: 'pipe' });
+
+  if (proc.pipeStdout) proc.pipeStdout(process.stdout);
+  if (proc.pipeStderr) proc.pipeStderr(process.stdout);
+
+  function signalHandler(signal: NodeJS.Signals) {
+    proc.kill(signal);
+  }
+
+  process.on('SIGINT', signalHandler);
+  process.on('SIGTERM', signalHandler);
+
+  try {
+    const res = await proc;
+    if (res.stderr.length > 0 && res.exitCode != 0) {
+      throw new Error(`failed with: ${res.stderr.match(/(.*)\s*$/)?.[0]?.trim() ?? 'unknown error'}`);
+    }
+  } finally {
+    process.off('SIGINT', signalHandler);
+    process.off('SIGTERM', signalHandler);
+  }
 }
 
 main().catch(error => {
