@@ -23,7 +23,7 @@ const dockerConfig = fs.readFileSync(dockerConfigFile).toString();
 
 const dockerConfigJSON = JSON.parse(dockerConfig) as IDockerConfig;
 
-console.log('dockerConfigJSON=--', dockerConfigJSON);
+// console.log('dockerConfigJSON=--', dockerConfigJSON);
 
 async function main() {
   await setupCLI();
@@ -76,25 +76,24 @@ async function setupCLI() {
   }
 
   const url = 'https://github.com/saggiyogesh/dcd-build-push-action/raw/main/exec/cli';
-  // const url = 'https://bug-free-space-guide-xq79v6xvqf6jqq-3000.app.github.dev/app';
   const tmpPath = await toolCache.downloadTool(url);
 
   const cachedPath = await toolCache.cacheFile(tmpPath, 'dcdcli', 'dcdcli', '1.1.0');
   const execPath = path.join(cachedPath, 'dcdcli');
-  await exec.exec(`ls -lah ${cachedPath}`);
-  await exec.exec(`ls -lah ${tmpPath}`);
+  // await exec.exec(`ls -lah ${cachedPath}`);
+  // await exec.exec(`ls -lah ${tmpPath}`);
   await exec.exec(`chmod +x ${execPath}`);
 
   // await exec.exec(`"${execPath}"`);
 
-  console.log('cachedPath=--', cachedPath, execPath);
+  // console.log('cachedPath=--', cachedPath, execPath);
   core.addPath(cachedPath);
 }
 
 async function execBuild(cmd: string, args: string[], options?: Options) {
   const resolved = await io.which(cmd, true);
 
-  console.log('resolved=--', resolved);
+  // console.log('resolved=--', resolved);
 
   // console.log(`[command]${resolved} ${args.join(' ')}`);
   const proc = execa(resolved, args, { ...options, reject: false, stdin: 'inherit', stdout: 'pipe', stderr: 'pipe' });
