@@ -84,11 +84,14 @@ async function setupCLI() {
   const cachedPath = await toolCache.cacheFile(tmpPath, 'cli', 'cli', '1.0.0');
   const execPath = path.join(cachedPath, 'cli');
   console.log('cachedPath=--', cachedPath, execPath);
-  core.addPath(execPath);
+  core.addPath(cachedPath);
 }
 
 async function execBuild(cmd: string, args: string[], options?: Options) {
   const resolved = await io.which(cmd, true);
+
+  console.log('resolved=--', resolved);
+
   console.log(`[command]${resolved} ${args.join(' ')}`);
   const proc = execa(resolved, args, { ...options, reject: false, stdin: 'inherit', stdout: 'pipe', stderr: 'pipe' });
 
