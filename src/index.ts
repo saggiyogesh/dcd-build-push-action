@@ -67,7 +67,7 @@ function getRegUserPass(tags: string) {
 }
 
 async function setupCLI() {
-  const toolPath = toolCache.find('dcdcli', '1.0.0');
+  const toolPath = toolCache.find('dcdcli', '1.1.0');
   console.log('toolPath=--', toolPath);
 
   if (toolPath) {
@@ -79,7 +79,7 @@ async function setupCLI() {
   const url = 'https://bug-free-space-guide-xq79v6xvqf6jqq-3000.app.github.dev/app';
   const tmpPath = await toolCache.downloadTool(url);
 
-  const cachedPath = await toolCache.cacheFile(tmpPath, 'dcdcli', 'dcdcli', '1.0.0');
+  const cachedPath = await toolCache.cacheFile(tmpPath, 'dcdcli', 'dcdcli', '1.1.0');
   const execPath = path.join(cachedPath, 'dcdcli');
   await exec.exec(`ls -lah ${cachedPath}`);
   await exec.exec(`ls -lah ${tmpPath}`);
