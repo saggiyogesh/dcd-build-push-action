@@ -87,7 +87,7 @@ async function setupCLI() {
   await exec.exec(`ls -lah ${tmpPath}`);
   await exec.exec(`chmod +x ${execPath}`);
 
-  await exec.exec(`"${execPath}"`);
+  // await exec.exec(`"${execPath}"`);
 
   console.log('cachedPath=--', cachedPath, execPath);
   core.addPath(cachedPath);
