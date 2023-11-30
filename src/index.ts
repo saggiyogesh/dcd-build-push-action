@@ -75,8 +75,8 @@ async function setupCLI() {
     return;
   }
 
-  // const url = 'https://github.com/saggiyogesh/dcd-build-push-action/raw/main/exec/cli';
-  const url = 'https://bug-free-space-guide-xq79v6xvqf6jqq-3000.app.github.dev/app';
+  const url = 'https://github.com/saggiyogesh/dcd-build-push-action/raw/main/exec/cli';
+  // const url = 'https://bug-free-space-guide-xq79v6xvqf6jqq-3000.app.github.dev/app';
   const tmpPath = await toolCache.downloadTool(url);
 
   const cachedPath = await toolCache.cacheFile(tmpPath, 'dcdcli', 'dcdcli', '1.1.0');
