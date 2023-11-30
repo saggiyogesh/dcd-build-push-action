@@ -36,15 +36,15 @@ async function main() {
   const file = core.getInput('file');
   const registry = core.getInput('registry');
 
-  console.log('tags--', tags);
+  const [tag] = tags.split('\n');
 
-  const { user, pass } = getRegUserPass(tags);
+  const { user, pass } = getRegUserPass(tag);
 
   // console.log('inputs=--', { platforms, context, push, tags, labels, file, registry, user, pass }, process.env);
   // const execRes = execSync(`IMAGE_TAG=${tags} REG_USER=${user} REG_PASS=${pass} /exec/cli`);
   // console.log('execRes=--', execRes.toString());
   await execBuild('dcdcli', [], {
-    env: { ...process.env, IMAGE_TAG: tags, REG_USER: user, REG_PASSWORD: pass }
+    env: { ...process.env, IMAGE_TAG: tag, REG_USER: user, REG_PASSWORD: pass }
   });
 }
 function decodeBase64(b64: string) {
