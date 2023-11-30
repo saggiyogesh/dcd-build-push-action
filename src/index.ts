@@ -36,6 +36,8 @@ async function main() {
   const file = core.getInput('file');
   const registry = core.getInput('registry');
 
+  console.log('tags--', tags);
+
   const { user, pass } = getRegUserPass(tags);
 
   // console.log('inputs=--', { platforms, context, push, tags, labels, file, registry, user, pass }, process.env);
